@@ -1,4 +1,5 @@
 import { dataSource } from "../config/dataSource";
+import { EmissionFactorError } from "./calculationCarbonEmission/errors";
 import { CarbonEmissionFactor } from "./carbonEmissionFactor/carbonEmissionFactor.entity";
 
 export const TEST_CARBON_EMISSION_FACTORS = [
@@ -64,7 +65,7 @@ export const getTestEmissionFactor = (name: string) => {
     (ef) => ef.name === name
   );
   if (!emissionFactor) {
-    throw new Error(
+    throw new EmissionFactorError(
       `test emission factor with name ${name} could not be found`
     );
   }
