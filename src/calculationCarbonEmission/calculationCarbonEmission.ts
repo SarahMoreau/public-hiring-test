@@ -21,6 +21,12 @@ export const calculateIngredientEmission = (ingredient: RecipeIngredient): numbe
     let co2EmissionPerKg: number = emissionFactor.emissionCO2eInKgPerUnit
     let quantityIngredient: number = ingredient.quantity;
 
+    if (quantityIngredient < 0) {
+        throw new QuantityError(
+            `test quantity '${quantityIngredient}' is negative.`
+        );
+    }
+
     if (emissionFactor.unit != "kg") {
         co2EmissionPerKg = convertQuantityToKg(emissionFactor.unit, co2EmissionPerKg);
     }

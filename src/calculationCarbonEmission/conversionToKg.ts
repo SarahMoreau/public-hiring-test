@@ -1,4 +1,4 @@
-import { QuantityError, UnknownUnitError } from "./errors";
+import { UnknownUnitError } from "./errors";
 
 export const coefficientsTableKg = [
     { unit: "mg", coef: 0.000001 },
@@ -23,10 +23,10 @@ export const convertQuantityToKg = (unit: string, quantity: number): number => {
         );
     }
 
-    if (quantity < 0) {
-        throw new QuantityError(
-            `test quantity '${quantity}' is negative.`
-        );
-    }
+    // if (quantity < 0) {
+    //     throw new QuantityError(
+    //         `test quantity '${quantity}' is negative.`
+    //     );
+    // }
     return quantity * ingredientUnit.coef;
 }
