@@ -37,10 +37,12 @@ export const calculateIngredientEmission = (ingredient: RecipeIngredient): numbe
 
 export const calculateRecipeEmission = (recipe: Recipe): number | null => {
     let recipeEmission: number = 0;
+    let recipeWeight: number = 0;
 
     for (let i = 0; i < recipe.ingredients.length; i = i + 1) {
         try {
-            recipeEmission += calculateIngredientEmission(recipe.ingredients[i])
+            recipeEmission += calculateIngredientEmission(recipe.ingredients[i]);
+            recipeWeight += recipe.ingredients[i].quantity;
         }
         catch (error) {
             if (error instanceof UnknownUnitError) {
@@ -55,5 +57,5 @@ export const calculateRecipeEmission = (recipe: Recipe): number | null => {
             return null;
         }
     }
-    return round(recipeEmission, 3);
+    return round(recipeEmission / recipeWeight, 3);
 }

@@ -62,7 +62,7 @@ describe("CalculateIngredientEmission", () => {
 
 describe("CalculateRecipeEmission", () => {
     it("should return 0.224 for the C02 emission of hamCheesePizza", () => {
-        expect(calculateRecipeEmission(hamCheesePizza)).toBe(0.224);
+        expect(calculateRecipeEmission(hamCheesePizza)).toBe(0.136);
     });
 
     it("should return null because of an EmissionFactorError", () => {
@@ -74,10 +74,10 @@ describe("CalculateRecipeEmission", () => {
     });
 
     it("should return 0.224 for the C02 emission of hamCheesePizzaWithNoCheese because cheese quantity = 0", () => {
-        expect(calculateRecipeEmission(hamCheesePizzaWithNoCheese)).toBe(0.206);
+        expect(calculateRecipeEmission(hamCheesePizzaWithNoCheese)).toBe(0.137);
     });
 
     it("should return 0.207 for the C02 emission of cheesePizza", () => {
-        expect(calculateRecipeEmission(cheesePizza)).toBe(0.207);
+        expect(calculateRecipeEmission(cheesePizza)).toBe(0.153);
     });
 });
