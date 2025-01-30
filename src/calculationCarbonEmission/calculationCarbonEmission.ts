@@ -18,24 +18,21 @@ const hamCheesePizza = {
 export const calculateIngredientEmission = (ingredient: RecipeIngredient): number => {
     const emissionFactor = getTestEmissionFactor(ingredient.name);
 
-    let co2EmissionPerKg: number = emissionFactor.emissionCO2eInKgPerUnit
-    let quantityIngredient: number = ingredient.quantity;
-
-    if (quantityIngredient < 0) {
+    if (ingredient.quantity < 0) {
         throw new QuantityError(
-            `test quantity '${quantityIngredient}' is negative.`
+            `test quantity '${ingredient.quantity}' is negative.`
         );
     }
 
     if (emissionFactor.unit != "kg") {
-        co2EmissionPerKg = convertQuantityToKg(emissionFactor.unit, co2EmissionPerKg);
+        emissionFactor.emissionCO2eInKgPerUnit = convertQuantityToKg(emissionFactor.unit, emissionFactor.emissionCO2eInKgPerUnit);
     }
 
     if (ingredient.unit != "kg") {
-        quantityIngredient = convertQuantityToKg(ingredient.unit, quantityIngredient);
+        ingredient.quantity = convertQuantityToKg(ingredient.unit, ingredient.quantity);
     }
 
-    return round(quantityIngredient * co2EmissionPerKg, 3);
+    return round(ingredient.quantity * emissionFactor.emissionCO2eInKgPerUnit, 3);
 }
 
 export const calculateRecipeEmission = (recipe: Recipe): number | null => {

@@ -23,10 +23,5 @@ export const convertQuantityToKg = (unit: string, quantity: number): number => {
         );
     }
 
-    // if (quantity < 0) {
-    //     throw new QuantityError(
-    //         `test quantity '${quantity}' is negative.`
-    //     );
-    // }
     return quantity * ingredientUnit.coef;
 }
