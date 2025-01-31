@@ -24,7 +24,7 @@ export class CarbonEmissionProductController {
   ): Promise<CarbonEmissionFactor[] | null> {
     ``;
     Logger.log(
-      `[carbon-emission-product] [POST] CarbonEmissionProduct: hamCheesePizza created`
+      `[carbon-emission-product] [POST] CarbonEmissionProduct: ${nameRecipe} created`
     );
     return calculateAndSaveRecipeEmission(recipe, nameRecipe);
   }

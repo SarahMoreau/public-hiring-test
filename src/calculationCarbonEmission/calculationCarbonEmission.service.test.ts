@@ -47,7 +47,8 @@ describe("calculationCarbonEmission.service", () => {
     });
 
     it("should throw an error if pizza emission is null", () => {
-        expect(() => { calculateAndSaveRecipeEmission(hamCheesePizzaWithNegativeQuantitiy, "hamCheesePizzaWithNegativeQuantity"); }).toThrow(NullEmissionError);
+        expect(() => { calculateAndSaveRecipeEmission(hamCheesePizzaWithNegativeQuantitiy, "hamCheesePizzaWithNegativeQuantity"); })
+            .toThrow(NullEmissionError);
     });
 });
 
