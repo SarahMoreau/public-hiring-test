@@ -5,15 +5,15 @@ import { dataSource } from "../config/dataSource";
 import { AppModule } from "../src/app.module";
 import { CarbonEmissionFactor } from "../src/carbonEmissionFactor/carbonEmissionFactor.entity";
 
-const hamCheesePizza = {
-    ingredients: [
-        { name: "ham", quantity: 0.1, unit: "kg" },
-        { name: "cheese", quantity: 0.15, unit: "kg" },
-        { name: "tomato", quantity: 0.4, unit: "kg" },
-        { name: "floor", quantity: 0.7, unit: "kg" }, //bug fix floor to flour
-        { name: "oliveOil", quantity: 0.3, unit: "kg" },
-    ],
-};
+// const hamCheesePizza = {
+//     ingredients: [
+//         { name: "ham", quantity: 0.1, unit: "kg" },
+//         { name: "cheese", quantity: 0.15, unit: "kg" },
+//         { name: "tomato", quantity: 0.4, unit: "kg" },
+//         { name: "floor", quantity: 0.7, unit: "kg" }, //bug fix floor to flour
+//         { name: "oliveOil", quantity: 0.3, unit: "kg" },
+//     ],
+// };
 
 const hamCheesePizzaEmission = {
     name: "hamCheesePizza",
@@ -41,25 +41,17 @@ describe("CarbonEmissionProductController", () => {
 
         app = moduleFixture.createNestApplication();
         await app.init();
-
-        // await dataSource
-        //     .getRepository(CarbonEmissionFactor)
-        //     .save([getTestEmissionFactor("ham"), getTestEmissionFactor("beef")]);
-
-        defaultCarbonEmissionFactors = await dataSource
-            .getRepository(CarbonEmissionFactor)
-            .find();
     });
 
-    // it("GET /carbon-emission-product", async () => {
-    //     return request(app.getHttpServer())
-    //         .get("/carbon-emission-product")
-    //         .expect(200)
-    //         .expect(({ body }) => {
-    //             expect(body).toEqual(defaultCarbonEmissionFactors);
-    //         });
-    // });
 
+    it("GET /carbon-emission-product", async () => {
+        return request(app.getHttpServer())
+            .get("/carbon-emission-product/cheesePizza")
+            .expect(200)
+            .expect(({ body }) => {
+                expect(body).toMatchObject({});
+            });
+    });
 
     it("POST /carbon-emission-product", async () => {
         const hamCheesePizza = {
@@ -78,6 +70,15 @@ describe("CarbonEmissionProductController", () => {
             .expect(({ body }) => {
                 expect(body.length).toEqual(1);
                 expect(body[0]).toMatchObject(hamCheesePizzaEmission);
+            });
+    });
+
+    it("GET /carbon-emission-product", async () => {
+        return request(app.getHttpServer())
+            .get("/carbon-emission-product/hamCheesePizza")
+            .expect(200)
+            .expect(({ body }) => {
+                expect(body).toMatchObject(hamCheesePizzaEmission);
             });
     });
 

@@ -9,10 +9,14 @@ export class CarbonEmissionFactorsService {
   constructor(
     @InjectRepository(CarbonEmissionFactor)
     private carbonEmissionFactorRepository: Repository<CarbonEmissionFactor>
-  ) {}
+  ) { }
 
   findAll(): Promise<CarbonEmissionFactor[]> {
     return this.carbonEmissionFactorRepository.find();
+  }
+
+  findProduct(name: string): Promise<CarbonEmissionFactor | null> {
+    return this.carbonEmissionFactorRepository.findOne({ where: { name: name } });
   }
 
   save(

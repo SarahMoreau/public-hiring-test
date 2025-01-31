@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Logger, Post } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Param, Post } from "@nestjs/common";
 import { CarbonEmissionFactor } from "../carbonEmissionFactor/carbonEmissionFactor.entity";
 import { CarbonEmissionFactorsService } from "../carbonEmissionFactor/carbonEmissionFactors.service";
-//import { CreateCarbonEmissionFactorDto } from "../carbonEmissionFactor/dto/create-carbonEmissionFactor.dto";
 import { calculateAndSaveRecipeEmission } from "./calculationCarbonEmission.service";
 import { Recipe } from "./recipe.entity";
 
@@ -11,12 +10,12 @@ export class CarbonEmissionProductController {
     private readonly carbonEmissionFactorService: CarbonEmissionFactorsService
   ) { }
 
-  @Get()
-  getCarbonEmissionProduct(): Promise<CarbonEmissionFactor[]> {
+  @Get(':nameRecipe')
+  getCarbonEmissionProduct(@Param('nameRecipe') nameRecipe: string): Promise<CarbonEmissionFactor | null> {
     Logger.log(
-      `[carbon-emission-product] [GET] CarbonEmissionProduct: getting all CarbonEmissionProduct`
+      `[carbon-emission-product] [GET] CarbonEmissionProduct: getting carbon emission of ${nameRecipe}`
     );
-    return this.carbonEmissionFactorService.findAll();
+    return this.carbonEmissionFactorService.findProduct(nameRecipe);
   }
 
   @Post()
