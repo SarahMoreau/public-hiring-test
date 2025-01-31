@@ -1,4 +1,4 @@
-import { dataSource } from "../../config/dataSource";
+import { dataSource, GreenlyDataSource } from "../../config/dataSource";
 import { CarbonEmissionFactor } from "../carbonEmissionFactor/carbonEmissionFactor.entity";
 import { CarbonEmissionFactorsService } from "../carbonEmissionFactor/carbonEmissionFactors.service";
 import { calculateAndSaveRecipeEmission } from "./calculationCarbonEmission.service";
@@ -12,7 +12,7 @@ const hamCheesePizza = {
         { name: "ham", quantity: 0.1, unit: "kg" },
         { name: "cheese", quantity: 0.15, unit: "kg" },
         { name: "tomato", quantity: 0.4, unit: "kg" },
-        { name: "flour", quantity: 0.7, unit: "kg" }, //bug fix floor to flour
+        { name: "flour", quantity: 0.7, unit: "kg" },
         { name: "oliveOil", quantity: 0.3, unit: "kg" },
     ],
 };
@@ -33,12 +33,9 @@ beforeAll(async () => {
     );
 });
 
-// beforeEach(async () => {
-//     await GreenlyDataSource.cleanDatabase();
-//     await dataSource
-//         .getRepository(CarbonEmissionFactor)
-//         .save(olivedOilEmissionFactor);
-// });
+beforeEach(async () => {
+    await GreenlyDataSource.cleanDatabase();
+});
 
 describe("calculationCarbonEmission.service", () => {
     it("should save hamCheesePizza emission", async () => {

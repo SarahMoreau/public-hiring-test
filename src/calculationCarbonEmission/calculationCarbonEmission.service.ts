@@ -5,9 +5,8 @@ import { calculateRecipeEmission } from "./calculationCarbonEmission";
 import { NullEmissionError } from "./errors";
 import { Recipe } from "./recipe.entity";
 
-export const calculateAndSaveRecipeEmission = async (recipe: Recipe, nameRecipe: string) => {
+export const calculateAndSaveRecipeEmission = (recipe: Recipe, nameRecipe: string): Promise<CarbonEmissionFactor[] | null> => {
     const recipeEmission: number | null = calculateRecipeEmission(recipe);
-    console.log("ICI !" + recipeEmission);
     if (recipeEmission == null) {
         throw new NullEmissionError(`The carbon footprint of the '${nameRecipe}' couldn't be calculated.`);
     }
@@ -17,5 +16,6 @@ export const calculateAndSaveRecipeEmission = async (recipe: Recipe, nameRecipe:
     carbonEmissionFactorService = new CarbonEmissionFactorsService(
         dataSource.getRepository(CarbonEmissionFactor)
     );
-    await carbonEmissionFactorService.save([productEmission]);
+    return carbonEmissionFactorService.save([productEmission]);
 }
+
