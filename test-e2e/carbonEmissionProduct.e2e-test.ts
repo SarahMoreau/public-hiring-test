@@ -64,7 +64,7 @@ describe("CarbonEmissionProductController", () => {
             ],
         };
         await request(app.getHttpServer())
-            .post("/carbon-emission-product")
+            .post("/carbon-emission-product/hamCheesePizza")
             .send(hamCheesePizza)
             .expect(201)
             .expect(({ body }) => {
@@ -93,7 +93,7 @@ describe("CarbonEmissionProductController", () => {
             ],
         };
         await request(app.getHttpServer())
-            .post("/carbon-emission-product")
+            .post("/carbon-emission-product/hamCheesePizza")
             .send(hamCheesePizza)
             .expect(500)
     });

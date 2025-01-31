@@ -18,14 +18,14 @@ export class CarbonEmissionProductController {
     return this.carbonEmissionFactorService.findProduct(nameRecipe);
   }
 
-  @Post()
-  createCarbonEmissionProduct(
+  @Post(':nameRecipe')
+  createCarbonEmissionProduct(@Param('nameRecipe') nameRecipe: string,
     @Body() recipe: Recipe
   ): Promise<CarbonEmissionFactor[] | null> {
     ``;
     Logger.log(
       `[carbon-emission-product] [POST] CarbonEmissionProduct: hamCheesePizza created`
     );
-    return calculateAndSaveRecipeEmission(recipe, "hamCheesePizza");
+    return calculateAndSaveRecipeEmission(recipe, nameRecipe);
   }
 }
