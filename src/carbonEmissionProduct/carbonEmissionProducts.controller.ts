@@ -1,6 +1,4 @@
 import { Body, Controller, Get, Logger, Param, Post } from "@nestjs/common";
-//import { CarbonEmissionFactor } from "../carbonEmissionFactor/carbonEmissionFactor.entity";
-//import { CarbonEmissionFactorsService } from "../carbonEmissionFactor/carbonEmissionFactors.service";
 import { calculateAndSaveRecipeEmission } from "./calculationCarbonEmissionProduct";
 import { CarbonEmissionProduct } from "./carbonEmissionProduct.entity";
 import { CarbonEmissionProductsService } from "./carbonEmissionProducts.service";

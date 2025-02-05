@@ -1,5 +1,4 @@
 import { round } from "lodash";
-//import { CarbonEmissionFactor } from "../carbonEmissionFactor/carbonEmissionFactor.entity";
 import { dataSource } from "../../config/dataSource";
 import { getTestEmissionFactor } from "../seed-dev-data";
 import { CarbonEmissionProduct } from "./carbonEmissionProduct.entity";
