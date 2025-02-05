@@ -4,7 +4,7 @@ import { getTestEmissionFactor } from "../seed-dev-data";
 import { CarbonEmissionProduct } from "./carbonEmissionProduct.entity";
 import { CarbonEmissionProductsService } from "./carbonEmissionProducts.service";
 import { convertQuantityToKg } from "./conversionToKg";
-import { EmissionFactorError, NullEmissionError, QuantityError, UnknownUnitError } from "./errors";
+import { QuantityError } from "./errors";
 import { Recipe, RecipeIngredient } from "./recipe.entity";
 
 export const calculateIngredientEmission = (ingredient: RecipeIngredient): number => {
@@ -27,36 +27,20 @@ export const calculateIngredientEmission = (ingredient: RecipeIngredient): numbe
     return round(ingredient.quantity * emissionFactor.emissionCO2eInKgPerUnit, 3);
 }
 
-export const calculateRecipeEmission = (recipe: Recipe): number | null => {
+export const calculateRecipeEmission = (recipe: Recipe): number => {
     let recipeEmission: number = 0;
     let recipeWeight: number = 0;
 
     for (let i = 0; i < recipe.ingredients.length; i = i + 1) {
-        try {
-            recipeEmission += calculateIngredientEmission(recipe.ingredients[i]);
-            recipeWeight += recipe.ingredients[i].quantity;
-        }
-        catch (error) {
-            if (error instanceof UnknownUnitError) {
-                console.log("Unit can't be convert to kg.");
-            }
-            if (error instanceof QuantityError) {
-                console.log("Quantity value is negative.");
-            }
-            if (error instanceof EmissionFactorError) {
-                console.log("Emission factor doesn't exist.");
-            }
-            return null;
-        }
+        recipeEmission += calculateIngredientEmission(recipe.ingredients[i]);
+        recipeWeight += recipe.ingredients[i].quantity;
     }
     return round(recipeEmission / recipeWeight, 3);
 }
 
 export const calculateAndSaveRecipeEmission = (recipe: Recipe, nameRecipe: string): Promise<CarbonEmissionProduct[] | null> => {
-    const recipeEmission: number | null = calculateRecipeEmission(recipe);
-    if (recipeEmission == null) {
-        throw new NullEmissionError(`The carbon footprint of the '${nameRecipe}' couldn't be calculated.`);
-    }
+    const recipeEmission: number = calculateRecipeEmission(recipe);
+
     const productEmission = new CarbonEmissionProduct({ nameRecipe: nameRecipe, emissionCO2eInKgPerUnit: recipeEmission, source: "Sarah Moreau" });
 
     let carbonEmissionProductService: CarbonEmissionProductsService;

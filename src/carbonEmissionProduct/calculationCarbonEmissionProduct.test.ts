@@ -2,7 +2,7 @@ import { dataSource, GreenlyDataSource } from "../../config/dataSource";
 import { calculateAndSaveRecipeEmission, calculateIngredientEmission, calculateRecipeEmission } from "./calculationCarbonEmissionProduct";
 import { CarbonEmissionProduct } from "./carbonEmissionProduct.entity";
 import { CarbonEmissionProductsService } from "./carbonEmissionProducts.service";
-import { NullEmissionError } from "./errors";
+import { EmissionFactorError, QuantityError } from "./errors";
 
 const hamCheesePizza = {
     ingredients: [
@@ -83,12 +83,14 @@ describe("CalculateRecipeEmission", () => {
         expect(calculateRecipeEmission(hamCheesePizza)).toBe(0.136);
     });
 
-    it("should return null because of an EmissionFactorError", () => {
-        expect(calculateRecipeEmission(hamCheesePizzaWithFloor)).toBe(null);
+    it("should throw an EmissionFactorError", () => {
+        expect(() => { calculateRecipeEmission(hamCheesePizzaWithFloor); })
+            .toThrow(EmissionFactorError);
     });
 
-    it("should return null because of an QuantityError", () => {
-        expect(calculateRecipeEmission(hamCheesePizzaWithNegativeQuantitiy)).toBe(null);
+    it("should throw an QuantityError", () => {
+        expect(() => { calculateRecipeEmission(hamCheesePizzaWithNegativeQuantitiy); })
+            .toThrow(QuantityError);
     });
 
     it("should return 0.224 for the C02 emission of hamCheesePizzaWithNoCheese because cheese quantity = 0", () => {
@@ -111,7 +113,7 @@ describe("calculationCarbonEmission.service", () => {
 
     it("should throw an error if pizza emission is null", () => {
         expect(() => { calculateAndSaveRecipeEmission(hamCheesePizzaWithNegativeQuantitiy, "hamCheesePizzaWithNegativeQuantity"); })
-            .toThrow(NullEmissionError);
+            .toThrow(QuantityError);
     });
 });
 

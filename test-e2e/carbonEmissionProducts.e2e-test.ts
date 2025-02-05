@@ -69,6 +69,22 @@ describe("CarbonEmissionProductController", () => {
             });
     });
 
+    // it("POST /carbon-emission-products", async () => {
+    //     const hamCheesePizza = {
+    //         ingredients: [
+    //             { name: "ham", quantity: 0.1, unit: "kg" },
+    //             { name: "cheese", quantity: -0.15, unit: "kg" },
+    //             { name: "tomato", quantity: 0.4, unit: "kg" },
+    //             { name: "flour", quantity: 0.7, unit: "kg" },
+    //             { name: "oliveOil", quantity: 0.3, unit: "kg" },
+    //         ],
+    //     };
+    //     await request(app.getHttpServer())
+    //         .post("/carbon-emission-products/hamCheesePizza")
+    //         .send(hamCheesePizza)
+    //         .expect(500)
+    // });
+
     it("POST /carbon-emission-products", async () => {
         const hamCheesePizza = {
             ingredients: [
@@ -82,6 +98,6 @@ describe("CarbonEmissionProductController", () => {
         await request(app.getHttpServer())
             .post("/carbon-emission-products/hamCheesePizza")
             .send(hamCheesePizza)
-            .expect(500)
+            .expect(400)
     });
 });
