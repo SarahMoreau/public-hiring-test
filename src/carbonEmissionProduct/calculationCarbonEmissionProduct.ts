@@ -1,7 +1,11 @@
 import { round } from "lodash";
+//import { CarbonEmissionFactor } from "../carbonEmissionFactor/carbonEmissionFactor.entity";
+import { dataSource } from "../../config/dataSource";
 import { getTestEmissionFactor } from "../seed-dev-data";
+import { CarbonEmissionProduct } from "./carbonEmissionProduct.entity";
+import { CarbonEmissionProductsService } from "./carbonEmissionProducts.service";
 import { convertQuantityToKg } from "./conversionToKg";
-import { EmissionFactorError, QuantityError, UnknownUnitError } from "./errors";
+import { EmissionFactorError, NullEmissionError, QuantityError, UnknownUnitError } from "./errors";
 import { Recipe, RecipeIngredient } from "./recipe.entity";
 
 export const calculateIngredientEmission = (ingredient: RecipeIngredient): number => {
@@ -47,4 +51,18 @@ export const calculateRecipeEmission = (recipe: Recipe): number | null => {
         }
     }
     return round(recipeEmission / recipeWeight, 3);
+}
+
+export const calculateAndSaveRecipeEmission = (recipe: Recipe, nameRecipe: string): Promise<CarbonEmissionProduct[] | null> => {
+    const recipeEmission: number | null = calculateRecipeEmission(recipe);
+    if (recipeEmission == null) {
+        throw new NullEmissionError(`The carbon footprint of the '${nameRecipe}' couldn't be calculated.`);
+    }
+    const productEmission = new CarbonEmissionProduct({ nameRecipe: nameRecipe, emissionCO2eInKgPerUnit: recipeEmission, source: "Sarah Moreau" });
+
+    let carbonEmissionProductService: CarbonEmissionProductsService;
+    carbonEmissionProductService = new CarbonEmissionProductsService(
+        dataSource.getRepository(CarbonEmissionProduct)
+    );
+    return carbonEmissionProductService.save([productEmission]);
 }

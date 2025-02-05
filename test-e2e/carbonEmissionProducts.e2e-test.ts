@@ -3,21 +3,9 @@ import { Test, TestingModule } from "@nestjs/testing";
 import * as request from "supertest";
 import { dataSource } from "../config/dataSource";
 import { AppModule } from "../src/app.module";
-import { CarbonEmissionFactor } from "../src/carbonEmissionFactor/carbonEmissionFactor.entity";
-
-// const hamCheesePizza = {
-//     ingredients: [
-//         { name: "ham", quantity: 0.1, unit: "kg" },
-//         { name: "cheese", quantity: 0.15, unit: "kg" },
-//         { name: "tomato", quantity: 0.4, unit: "kg" },
-//         { name: "floor", quantity: 0.7, unit: "kg" }, //bug fix floor to flour
-//         { name: "oliveOil", quantity: 0.3, unit: "kg" },
-//     ],
-// };
 
 const hamCheesePizzaEmission = {
-    name: "hamCheesePizza",
-    unit: "kgCO2e/kgproduct",
+    nameRecipe: "hamCheesePizza",
     emissionCO2eInKgPerUnit: 0.136,
     source: "Sarah Moreau",
 };
@@ -32,7 +20,6 @@ afterAll(async () => {
 
 describe("CarbonEmissionProductController", () => {
     let app: INestApplication;
-    let defaultCarbonEmissionFactors: CarbonEmissionFactor[];
 
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -44,16 +31,16 @@ describe("CarbonEmissionProductController", () => {
     });
 
 
-    it("GET /carbon-emission-product", async () => {
+    it("GET /carbon-emission-products", async () => {
         return request(app.getHttpServer())
-            .get("/carbon-emission-product/cheesePizza")
+            .get("/carbon-emission-products/cheesePizza")
             .expect(200)
             .expect(({ body }) => {
                 expect(body).toMatchObject({});
             });
     });
 
-    it("POST /carbon-emission-product", async () => {
+    it("POST /carbon-emission-products", async () => {
         const hamCheesePizza = {
             ingredients: [
                 { name: "ham", quantity: 0.1, unit: "kg" },
@@ -64,7 +51,7 @@ describe("CarbonEmissionProductController", () => {
             ],
         };
         await request(app.getHttpServer())
-            .post("/carbon-emission-product/hamCheesePizza")
+            .post("/carbon-emission-products/hamCheesePizza")
             .send(hamCheesePizza)
             .expect(201)
             .expect(({ body }) => {
@@ -75,14 +62,14 @@ describe("CarbonEmissionProductController", () => {
 
     it("GET /carbon-emission-product", async () => {
         return request(app.getHttpServer())
-            .get("/carbon-emission-product/hamCheesePizza")
+            .get("/carbon-emission-products/hamCheesePizza")
             .expect(200)
             .expect(({ body }) => {
                 expect(body).toMatchObject(hamCheesePizzaEmission);
             });
     });
 
-    it("POST /carbon-emission-product", async () => {
+    it("POST /carbon-emission-products", async () => {
         const hamCheesePizza = {
             ingredients: [
                 { name: "ham", quantity: 0.1, unit: "kg" },
@@ -93,7 +80,7 @@ describe("CarbonEmissionProductController", () => {
             ],
         };
         await request(app.getHttpServer())
-            .post("/carbon-emission-product/hamCheesePizza")
+            .post("/carbon-emission-products/hamCheesePizza")
             .send(hamCheesePizza)
             .expect(500)
     });

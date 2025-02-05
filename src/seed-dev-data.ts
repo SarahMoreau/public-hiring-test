@@ -1,6 +1,6 @@
 import { dataSource } from "../config/dataSource";
-import { EmissionFactorError } from "./calculationCarbonEmission/errors";
 import { CarbonEmissionFactor } from "./carbonEmissionFactor/carbonEmissionFactor.entity";
+import { EmissionFactorError } from "./carbonEmissionProduct/errors";
 
 export const TEST_CARBON_EMISSION_FACTORS = [
   {
